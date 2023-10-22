@@ -1,6 +1,8 @@
 package com.foodexpress.superadmin.infra.exception;
 
 
+import static com.foodexpress.superadmin.modules.utils.ApiUtils.fail;
+
 import com.foodexpress.superadmin.modules.utils.ApiUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -23,12 +25,16 @@ public class ExceptionAdvice {
         return new ResponseEntity<>(fail(message, status), headers, status);
     }
 
-    @ExceptionHandler
-    private ResponseEntity<ApiUtils.ApiResult<?>> defaultException(Exception e) {
-        log.error("defaultException", e);
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity<ApiUtils.ApiResult<?>> defaultException(Exception e) {
+        log.error("defaultException : {} ", e.getMessage());
         e.printStackTrace();
-
         return newResponse(e, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(OmittedRequireFieldException.class)
+    protected ResponseEntity<ApiUtils.ApiResult<?>> handleOmittedRequireFieldException(OmittedRequireFieldException omittedRequireFieldException) {
+        return newResponse(omittedRequireFieldException, HttpStatus.FORBIDDEN);
     }
 
 }
