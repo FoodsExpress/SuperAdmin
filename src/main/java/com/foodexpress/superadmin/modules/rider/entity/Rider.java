@@ -18,6 +18,9 @@ public class Rider extends CommonEntity {
     // 업체 명
     private String partnerName;
 
+    // 전화번호
+    private String phoneNumber;
+    
     // 라이더 유형
     private RiderType riderType;
 
