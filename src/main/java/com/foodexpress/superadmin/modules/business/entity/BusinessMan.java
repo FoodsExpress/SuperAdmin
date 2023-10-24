@@ -1,12 +1,20 @@
 package com.foodexpress.superadmin.modules.business.entity;
 
 import com.foodexpress.superadmin.modules.common.CommonEntity;
+import com.foodexpress.superadmin.modules.store.entity.Store;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
+import java.util.Set;
+import lombok.Getter;
 
+/**
+ * @author yeji
+ * 사업자 정보 entity
+ */
+@Getter
 @Entity
 public class BusinessMan extends CommonEntity {
-
 
     // 사업자 명
     private String businessName;
@@ -27,6 +35,9 @@ public class BusinessMan extends CommonEntity {
     private boolean isOpen;
 
     // 사업자 폐지일
-    private LocalDateTime closeDateTime;
+    private LocalDateTime finishedAt;
+
+    @OneToMany(mappedBy = "businessMan")
+    private Set<Store> stores;
 
 }
