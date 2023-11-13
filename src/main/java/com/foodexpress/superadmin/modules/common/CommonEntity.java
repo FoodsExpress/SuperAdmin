@@ -21,5 +21,4 @@ public class CommonEntity extends UpdatedEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     protected UUID uuid;
 
-
 }
