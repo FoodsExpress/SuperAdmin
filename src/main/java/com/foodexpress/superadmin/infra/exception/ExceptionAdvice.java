@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
@@ -26,13 +27,15 @@ public class ExceptionAdvice {
     }
 
     @ExceptionHandler(Exception.class)
+    @ResponseStatus
     protected ResponseEntity<ApiUtils.ApiResult<?>> defaultException(Exception e) {
         log.error("defaultException : {} ", e.getMessage());
         e.printStackTrace();
-        return newResponse(e, HttpStatus.BAD_REQUEST);
+        return newResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(OmittedRequireFieldException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ResponseEntity<ApiUtils.ApiResult<?>> handleOmittedRequireFieldException(OmittedRequireFieldException omittedRequireFieldException) {
         return newResponse(omittedRequireFieldException, HttpStatus.FORBIDDEN);
     }
