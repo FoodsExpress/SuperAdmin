@@ -1,12 +1,15 @@
 package com.foodexpress.superadmin.infra.exception;
 
 
+import static com.foodexpress.superadmin.modules.utils.ApiUtils.fail;
+
 import com.foodexpress.superadmin.modules.utils.ApiUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
@@ -23,12 +26,18 @@ public class ExceptionAdvice {
         return new ResponseEntity<>(fail(message, status), headers, status);
     }
 
-    @ExceptionHandler
-    private ResponseEntity<ApiUtils.ApiResult<?>> defaultException(Exception e) {
-        log.error("defaultException", e);
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus
+    protected ResponseEntity<ApiUtils.ApiResult<?>> defaultException(Exception e) {
+        log.error("defaultException : {} ", e.getMessage());
         e.printStackTrace();
+        return newResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
-        return newResponse(e, HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(OmittedRequireFieldException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ResponseEntity<ApiUtils.ApiResult<?>> handleOmittedRequireFieldException(OmittedRequireFieldException omittedRequireFieldException) {
+        return newResponse(omittedRequireFieldException, HttpStatus.FORBIDDEN);
     }
 
 }
