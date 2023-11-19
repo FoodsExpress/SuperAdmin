@@ -1,8 +1,12 @@
 package com.foodexpress.superadmin.modules.event.entity;
 
 import com.foodexpress.superadmin.modules.common.CommonEntity;
+import com.foodexpress.superadmin.modules.coupon.entity.Coupon;
 import com.foodexpress.superadmin.modules.event.form.EventForm;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -38,6 +42,12 @@ public class Event extends CommonEntity {
     private String eventImageLink3;
     // 이벤트 주소
     private String eventLink;
+    // 할인 적용 유무
+    private boolean isDiscount;
+    // 쿠폰
+    @OneToOne(targetEntity = Coupon.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "coupon_id")
+    private Coupon coupon;
 
     public Event(EventForm eventForm) {
         this.eventName = eventForm.getEventName();
@@ -67,5 +77,6 @@ public class Event extends CommonEntity {
         this.eventImageLink2 = eventForm.getEventImageLink2();
         this.eventImageLink3 = eventForm.getEventImageLink3();
         this.eventLink = eventForm.getEventLink();
+        this.isDiscount = eventForm.isDiscount();
     }
 }

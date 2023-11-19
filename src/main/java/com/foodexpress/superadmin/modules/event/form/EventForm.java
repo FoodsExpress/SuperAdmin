@@ -28,5 +28,6 @@ public class EventForm {
     private String eventImageLink3;
     // 이벤트 주소
     private String eventLink;
-
+    // 할인 적용 유무
+    private boolean isDiscount;
 }

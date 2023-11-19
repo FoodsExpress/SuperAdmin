@@ -4,7 +4,9 @@ import com.foodexpress.superadmin.modules.common.CommonEntity;
 import com.foodexpress.superadmin.modules.coupon.enums.CouponType;
 import com.foodexpress.superadmin.modules.coupon.enums.DetailTargetGroup;
 import com.foodexpress.superadmin.modules.coupon.enums.TargetGroup;
+import com.foodexpress.superadmin.modules.event.entity.Event;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
 import lombok.Getter;
 
@@ -32,4 +34,7 @@ public class Coupon extends CommonEntity {
     private boolean isLimit;
     // 쿠폰 제한 갯수
     private int limitCount;
+    //
+    @OneToOne(mappedBy = "coupon")
+    private Event event;
 }
